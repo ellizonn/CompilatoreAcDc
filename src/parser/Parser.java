@@ -1,7 +1,5 @@
 package parser;
 
-import java.io.IOException;
-
 import scanner.*;
 import token.*;
 
@@ -13,19 +11,35 @@ public class Parser {
 		this.scanner = scanner;
 	}
 	
-	public void parse() throws IOException, SintaxException {
+	public void parse() throws SintaxException {
 		parsePrg();
 		return;
 	}
 	
-	private Token match(TokenType type) throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
-		if (type.equals(tk.getType())) return scanner.nextToken();
+	private Token match(TokenType type) throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
+		if (type.equals(tk.getType())) {
+			try {
+				return scanner.nextToken();
+			} catch (LexicalException e) {
+				throw new SintaxException("Eccezione di tipo LexicalException", e);
+			}
+		}
 		else throw new SintaxException("Errore sintattico alla riga "+tk.getLine()+": aspettavo "+type+", invece ho ricevuto "+tk.getType());
 	}
 	
-	private void parsePrg() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parsePrg() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case TYINT,TYFLOAT,ID,PRINT,EOF:
 			parseDSs();
@@ -36,8 +50,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseDSs() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseDSs() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case TYINT,TYFLOAT:
 			parseDcl();
@@ -54,8 +73,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseDcl() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseDcl() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case TYFLOAT:
 			match(TokenType.TYFLOAT);
@@ -72,8 +96,13 @@ public class Parser {
 		}		
 	}
 	
-	private void parseStm() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseStm() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case ID:
 			match(TokenType.ID);
@@ -91,8 +120,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseExp() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseExp() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
 			parseTr();
@@ -103,8 +137,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseExpP() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseExpP() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case PLUS:
 			match(TokenType.PLUS);
@@ -123,8 +162,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseTr() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseTr() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
 			parseVal();
@@ -135,8 +179,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseTrP() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseTrP() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case TIMES:
 			match(TokenType.TIMES);
@@ -155,8 +204,13 @@ public class Parser {
 		}
 	}
 	
-	private void parseVal() throws IOException, SintaxException {
-		Token tk = scanner.peekToken();
+	private void parseVal() throws SintaxException {
+		Token tk = null;
+		try {
+			tk = scanner.peekToken();
+		} catch (LexicalException e) {
+			throw new SintaxException("Eccezione di tipo LexicalException", e);
+		}
 		switch (tk.getType()) {
 		case INT:
 			match(TokenType.INT);

@@ -14,5 +14,9 @@ public class SintaxException extends Exception {
 	public SintaxException(String message) {
         super(message);
     }
+	
+	public SintaxException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

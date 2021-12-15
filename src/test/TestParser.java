@@ -1,79 +1,80 @@
 package test;
 
-import java.io.IOException;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import scanner.*;
 import parser.*;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 class TestParser {
+	
+	private Scanner scanDec=null, scanDSsDclStm=null, scanParserWrong1=null,
+			scanParserWrong2=null, scanCorrect1=null, scanParserCorrect2=null,
+			scanParserCorrect3=null;
+	
+	@BeforeEach
+	public void setUpScanners() {
+		Assertions.assertDoesNotThrow(() -> {
+			scanDec = new Scanner("src/test/data/testParser/testDec.txt");
+			scanDSsDclStm = new Scanner("src/test/data/testParser/testDSsDclStm.txt");
+			scanParserWrong1 = new Scanner("src/test/data/testParser/fileParserWrong1.txt");
+			scanParserWrong2 = new Scanner("src/test/data/testParser/fileParserWrong2.txt");
+			scanCorrect1 = new Scanner("src/test/data/testParser/fileScannerCorrect1.txt");
+			scanParserCorrect2 = new Scanner("src/test/data/testParser/fileParserCorrect2.txt");
+			scanParserCorrect3 = new Scanner("src/test/data/testParser/fileParserCorrect3.txt");
+		});
+	}
 
 	@Test
-	void testDec() throws IOException {
-		String path = "src/test/data/testParser/testDec.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
+	void testDec() {
+		Parser parser = new Parser(scanDec);
 		Assertions.assertDoesNotThrow(() -> parser.parse());
 	}
 	
 	@Test
-	void testDSsDclStm() throws IOException {
-		String path = "src/test/data/testParser/testDSsDclStm.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
-		SintaxException exc = Assertions.assertThrows(SintaxException.class, () -> parser.parse());
-		Assertions.assertEquals("Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());	
+	void testDSsDclStm() {
+		Parser parser = new Parser(scanDSsDclStm);
+		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT");	
 	}
 	
 	@Test
-	void testParserWrong1() throws IOException {
-		String path = "src/test/data/testParser/fileParserWrong1.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
-		SintaxException exc = Assertions.assertThrows(SintaxException.class, () -> parser.parse());
-		Assertions.assertEquals("Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());
+	void testParserWrong1() {
+		Parser parser = new Parser(scanParserWrong1);
+		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
 	}
 	
 	@Test
-	void testParserWrong2() throws IOException {
-		String path = "src/test/data/testParser/fileParserWrong2.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
-		SintaxException exc = Assertions.assertThrows(SintaxException.class, () -> parser.parse());
-		Assertions.assertEquals("Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());
+	void testParserWrong2() {
+		Parser parser = new Parser(scanParserWrong2);
+		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
 	}
 	
 	@Test
-	void testScannerCorrect1() throws IOException {
-		String path = "src/test/data/testParser/fileScannerCorrect1.txt";
-		Scanner scanner = new Scanner(path);
-		Assertions.assertEquals("<TYINT,r:1>", scanner.nextToken().toString());
-		Assertions.assertEquals("<ID,r:1,num>", scanner.nextToken().toString());
-		Assertions.assertEquals("<ASSIGN,r:1>", scanner.nextToken().toString());
-		Assertions.assertEquals("<INT,r:1,5>", scanner.nextToken().toString());
-		Assertions.assertEquals("<SEMI,r:1>", scanner.nextToken().toString());
-		Assertions.assertEquals("<INT,r:2,5>", scanner.nextToken().toString());
-		Assertions.assertEquals("<PLUS,r:2>", scanner.nextToken().toString());
-		Assertions.assertEquals("<FLOAT,r:2,13.0>", scanner.nextToken().toString());
-		Assertions.assertEquals("<SEMI,r:2>", scanner.nextToken().toString());
-		Assertions.assertEquals("<EOF,r:3>", scanner.nextToken().toString());
+	void testScannerCorrect1() {
+		Assertions.assertDoesNotThrow(() -> {
+			Assertions.assertEquals("<TYINT,r:1>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<ID,r:1,num>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<ASSIGN,r:1>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<INT,r:1,5>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<SEMI,r:1>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<INT,r:2,5>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<PLUS,r:2>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<FLOAT,r:2,13.0>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<SEMI,r:2>", scanCorrect1.nextToken().toString());
+			Assertions.assertEquals("<EOF,r:3>", scanCorrect1.nextToken().toString());
+		});
 	}
 	
 	@Test
-	void testParserCorrect2() throws IOException {
-		String path = "src/test/data/testParser/fileParserCorrect2.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
+	void testParserCorrect2() {
+		Parser parser = new Parser(scanParserCorrect2);
 		Assertions.assertDoesNotThrow(() -> parser.parse());
 	}
 	
 	@Test
-	void testParserCorrect3() throws IOException {
-		String path = "src/test/data/testParser/fileParserCorrect3.txt";
-		Scanner scanner = new Scanner(path);
-		Parser parser = new Parser(scanner);
+	void testParserCorrect3() {
+		Parser parser = new Parser(scanParserCorrect3);
 		Assertions.assertDoesNotThrow(() -> parser.parse());
 	}
 

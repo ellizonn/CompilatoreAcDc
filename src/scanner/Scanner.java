@@ -50,14 +50,14 @@ public class Scanner {
 
 	
 	
-	public Token peekToken() throws IOException {
+	public Token peekToken() throws LexicalException {
 		if (this.followingToken == null) {
 			this.followingToken = this.nextToken();
 		}
 		return followingToken;
 	}
 
-	public Token nextToken() throws IOException {
+	public Token nextToken() throws LexicalException {
 		
 		// Se followingToken!=null lo dobbiamo ritornare e poi impostare a null,
 		// altrimenti vado avanti consumando l'input
@@ -68,7 +68,12 @@ public class Scanner {
 		}
 
 		// nextChar contiene il prossimo carattere dell'input.
-		char nextChar = peekChar();
+		char nextChar;
+		try {
+			nextChar = peekChar();
+		} catch (IOException e) {
+			throw new LexicalException("Eccezione di tipo IOException", e);
+		}
 		
 		// Avanza nel buffer leggendo i carattere in skipChars
 		// incrementando riga se leggi '\n'.
@@ -80,8 +85,13 @@ public class Scanner {
 			if (nextChar==EOF) {
 				return new Token(TokenType.EOF, this.riga);
 			}
-			readChar();
-			nextChar = peekChar();
+			
+			try {
+				readChar();
+				nextChar = peekChar();
+			} catch (IOException e) {
+				throw new LexicalException("Eccezione di tipo IOException", e);
+			}
 		}
 
 
@@ -106,44 +116,70 @@ public class Scanner {
 		// Se nextChar e' in operators
 		// ritorna il Token associato con l'operatore o il delimitatore
 		if (operatorsMap.containsKey(nextChar)) {
-			readChar();
+			try {
+				readChar();
+			} catch (IOException e) {
+				throw new LexicalException("Eccezione di tipo IOException", e);
+			}
 			return new Token(operatorsMap.get(nextChar), this.riga);
 		}
 		
 
 		// Altrimenti il carattere NON E' UN CARATTERE LEGALE
-		readChar();
-		throw new IllegalArgumentException("E' stato rilevato un carattere illegale");
+		try {
+			readChar();
+		} catch (IOException e) {
+			throw new LexicalException("Eccezione di tipo IOException", e);
+		}
+		throw new LexicalException("E' stato rilevato il carattere illegale '"+nextChar+"' alla riga "+this.riga);
 
 	}
 	
 	// legge sia un intero che un float e ritorna il Token INUM o FNUM
 	// i caratteri che leggete devono essere accumulati in una stringa
 	// che verra' assegnata al campo valore del Token
-	private Token scanNumber() throws IOException {
-		char nextChar = peekChar();
+	private Token scanNumber() throws LexicalException {
+		char nextChar;
+		try {
+			nextChar = peekChar();
+		} catch (IOException e) {
+			throw new LexicalException("Eccezione di tipo IOException", e);
+		}
+		
 		String number = new String();
 		while(numbers.contains(nextChar)) {
 			number += nextChar;
-			readChar();
-			nextChar = peekChar();
+			try {
+				readChar();
+				nextChar = peekChar();
+			} catch (Exception e) {
+				throw new LexicalException("Eccezione di tipo IOException", e);
+			}
 		}
 		if (nextChar=='.') {
 			number += nextChar;
-			readChar();
-			nextChar = peekChar();
+			try {
+				readChar();
+				nextChar = peekChar();
+			} catch (Exception e) {
+				throw new LexicalException("Eccezione di tipo IOException", e);
+			}
 			if (!numbers.contains(nextChar)) {
-				throw new NumberFormatException("Rilevato numero float con parte decimale nulla");
+				throw new LexicalException("Rilevato numero float con parte decimale nulla");
 			}
 			int decimals = 1;
 			while(numbers.contains(nextChar)) {
 				number += nextChar;
-				readChar();
-				nextChar = peekChar();
+				try {
+					readChar();
+					nextChar = peekChar();
+				} catch (Exception e) {
+					throw new LexicalException("Eccezione di tipo IOException", e);
+				}
 				decimals+=1;
 			}
 			if (decimals >= 5) {
-				throw new NumberFormatException("Rilevato numero float con parte decimale troppo lunga");
+				throw new LexicalException("Rilevato numero float con parte decimale troppo lunga");
 			}
 			return new Token(TokenType.FLOAT, this.riga, number);
 		}
@@ -153,13 +189,22 @@ public class Scanner {
 	// legge tutte le lettere minuscole e ritorna un Token ID o
 	// il Token associato Parola Chiave (per generare i Token per le
 	// parole chiave usate l'HaskMap di corrispondenza
-	private Token scanId() throws IOException {
-		char nextChar = peekChar();
+	private Token scanId() throws LexicalException {
+		char nextChar;
+		try {
+			nextChar = peekChar();
+		} catch (IOException e) {
+			throw new LexicalException("Eccezione di tipo IOException", e);
+		}
 		String keyword = new String();
 		while(letters.contains(nextChar)) {
 			keyword += nextChar;
-			readChar();
-			nextChar = peekChar();
+			try {
+				readChar();
+				nextChar = peekChar();
+			} catch (Exception e) {
+				throw new LexicalException("Eccezione di tipo IOException", e);
+			}
 		}
 		if (keyWordsMap.containsKey(keyword)) {
 			return new Token(keyWordsMap.get(keyword), this.riga);
