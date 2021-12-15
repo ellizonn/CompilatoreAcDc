@@ -11,34 +11,34 @@ public class Parser {
 		this.scanner = scanner;
 	}
 	
-	public void parse() throws SintaxException {
+	public void parse() throws SyntaxException {
 		parsePrg();
 		return;
 	}
 	
-	private Token match(TokenType type) throws SintaxException {
+	private Token match(TokenType type) throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		if (type.equals(tk.getType())) {
 			try {
 				return scanner.nextToken();
 			} catch (LexicalException e) {
-				throw new SintaxException("Eccezione di tipo LexicalException", e);
+				throw new SyntaxException("Eccezione di tipo LexicalException", e);
 			}
 		}
-		else throw new SintaxException("Errore sintattico alla riga "+tk.getLine()+": aspettavo "+type+", invece ho ricevuto "+tk.getType());
+		else throw new SyntaxException("Errore sintattico alla riga "+tk.getLine()+": aspettavo "+type+", invece ho ricevuto "+tk.getType());
 	}
 	
-	private void parsePrg() throws SintaxException {
+	private void parsePrg() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case TYINT,TYFLOAT,ID,PRINT,EOF:
@@ -46,16 +46,16 @@ public class Parser {
 			match(TokenType.EOF);
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseDSs() throws SintaxException {
+	private void parseDSs() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case TYINT,TYFLOAT:
@@ -69,16 +69,16 @@ public class Parser {
 		case EOF:
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseDcl() throws SintaxException {
+	private void parseDcl() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case TYFLOAT:
@@ -92,16 +92,16 @@ public class Parser {
 			match(TokenType.SEMI);
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}		
 	}
 	
-	private void parseStm() throws SintaxException {
+	private void parseStm() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case ID:
@@ -116,16 +116,16 @@ public class Parser {
 			match(TokenType.SEMI);
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseExp() throws SintaxException {
+	private void parseExp() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
@@ -133,16 +133,16 @@ public class Parser {
 			parseExpP();
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseExpP() throws SintaxException {
+	private void parseExpP() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case PLUS:
@@ -158,16 +158,16 @@ public class Parser {
 		case SEMI:
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseTr() throws SintaxException {
+	private void parseTr() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
@@ -175,16 +175,16 @@ public class Parser {
 			parseTrP();
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseTrP() throws SintaxException {
+	private void parseTrP() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case TIMES:
@@ -200,16 +200,16 @@ public class Parser {
 		case PLUS,MINUS,SEMI:
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private void parseVal() throws SintaxException {
+	private void parseVal() throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
 		} catch (LexicalException e) {
-			throw new SintaxException("Eccezione di tipo LexicalException", e);
+			throw new SyntaxException("Eccezione di tipo LexicalException", e);
 		}
 		switch (tk.getType()) {
 		case INT:
@@ -222,7 +222,7 @@ public class Parser {
 			match(TokenType.ID);
 			return;
 		default:
-			throw new SintaxException("Errore sintattico alla riga "+tk.getLine());
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	

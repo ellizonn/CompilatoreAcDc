@@ -35,19 +35,19 @@ class TestParser {
 	@Test
 	void testDSsDclStm() {
 		Parser parser = new Parser(scanDSsDclStm);
-		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT");	
+		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT");	
 	}
 	
 	@Test
 	void testParserWrong1() {
 		Parser parser = new Parser(scanParserWrong1);
-		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
+		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
 	}
 	
 	@Test
 	void testParserWrong2() {
 		Parser parser = new Parser(scanParserWrong2);
-		Assertions.assertThrows(SintaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
+		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
 	}
 	
 	@Test
