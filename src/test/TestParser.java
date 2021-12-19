@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 class TestParser {
 	
+	private Exception exc;
+	
 	private Scanner scanDec=null, scanDSsDclStm=null, scanParserWrong1=null,
 			scanParserWrong2=null, scanCorrect1=null, scanParserCorrect2=null,
 			scanParserCorrect3=null;
@@ -35,19 +37,22 @@ class TestParser {
 	@Test
 	void testDSsDclStm() {
 		Parser parser = new Parser(scanDSsDclStm);
-		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT");	
+		exc = Assertions.assertThrows(SyntaxException.class, () -> parser.parse());
+		Assertions.assertEquals("Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());
 	}
 	
 	@Test
 	void testParserWrong1() {
 		Parser parser = new Parser(scanParserWrong1);
-		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
+		exc = Assertions.assertThrows(SyntaxException.class, () -> parser.parse());
+		Assertions.assertEquals("Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());
 	}
 	
 	@Test
 	void testParserWrong2() {
 		Parser parser = new Parser(scanParserWrong2);
-		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT");
+		exc = Assertions.assertThrows(SyntaxException.class, () -> parser.parse());
+		Assertions.assertEquals("Errore sintattico alla riga 2: aspettavo ID, invece ho ricevuto TYFLOAT", exc.getMessage());
 	}
 	
 	@Test

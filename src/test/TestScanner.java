@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 class TestScanner {
 	
+	private Exception exc;
+	
 	private Scanner scanEOF=null, scanID=null, scanKeywords=null, scanOperators=null,
 			scanId=null, scanINT=null, scanFLOAT=null, scanErroriIdNumbers=null,
 			scanGenerale=null;
@@ -106,27 +108,34 @@ class TestScanner {
 			Assertions.assertEquals("<FLOAT,r:1,098.895>", scanFLOAT.nextToken().toString());
 			Assertions.assertEquals("<INT,r:2,98>", scanFLOAT.nextToken().toString());
 		});
-		Assertions.assertThrows(LexicalException.class, () -> scanFLOAT.nextToken(), "Rilevato numero float con parte decimale nulla");
-		Assertions.assertThrows(LexicalException.class, () -> scanFLOAT.nextToken(), "Rilevato numero float con parte decimale troppo lunga");
+		exc = Assertions.assertThrows(LexicalException.class, () -> scanFLOAT.nextToken());
+		Assertions.assertEquals("Rilevato numero float con parte decimale nulla alla riga 3", exc.getMessage());
+		exc = Assertions.assertThrows(LexicalException.class, () -> scanFLOAT.nextToken());
+		Assertions.assertEquals("Rilevato numero float con parte decimale troppo lunga alla riga 5", exc.getMessage());
 		Assertions.assertDoesNotThrow(() -> Assertions.assertEquals("<EOF,r:5>", scanFLOAT.nextToken().toString()));
 	}
 	
 	@Test
 	public void testErroriIdNumbers() {
-			Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken(), "Rilevato numero float con parte decimale nulla");
+			exc = Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken());
+			Assertions.assertEquals("Rilevato numero float con parte decimale nulla alla riga 1", exc.getMessage());
 			Assertions.assertDoesNotThrow(() -> Assertions.assertEquals("<ID,r:1,asd>", scanErroriIdNumbers.nextToken().toString()));
-			Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken(), "E' stato rilevato il carattere illegale '.' alla riga 2");
+			exc = Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken());
+			Assertions.assertEquals("E' stato rilevato il carattere illegale '.' alla riga 2", exc.getMessage());
 			Assertions.assertDoesNotThrow(() -> {
 				Assertions.assertEquals("<INT,r:2,123>", scanErroriIdNumbers.nextToken().toString());
 				Assertions.assertEquals("<ID,r:3,asd>", scanErroriIdNumbers.nextToken().toString());
 			});
-			Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken(), "E' stato rilevato il carattere illegale '.' alla riga 3");
+			exc = Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken());
+			Assertions.assertEquals("E' stato rilevato il carattere illegale '.' alla riga 3", exc.getMessage());
 			Assertions.assertDoesNotThrow(() -> {
 				Assertions.assertEquals("<INT,r:3,123>", scanErroriIdNumbers.nextToken().toString());
 				Assertions.assertEquals("<TYINT,r:4>", scanErroriIdNumbers.nextToken().toString());
 			});
-			Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken(), "E' stato rilevato il carattere illegale '.' alla riga 4");
-			Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken(), "Rilevato numero float con parte decimale nulla");
+			exc = Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken());
+			Assertions.assertEquals("E' stato rilevato il carattere illegale '.' alla riga 4", exc.getMessage());
+			exc = Assertions.assertThrows(LexicalException.class, () -> scanErroriIdNumbers.nextToken());
+			Assertions.assertEquals("Rilevato numero float con parte decimale nulla alla riga 4", exc.getMessage());
 			Assertions.assertDoesNotThrow(() -> {
 				Assertions.assertEquals("<INT,r:5,123>", scanErroriIdNumbers.nextToken().toString());
 				Assertions.assertEquals("<ID,r:5,asd>", scanErroriIdNumbers.nextToken().toString());
@@ -144,7 +153,8 @@ class TestScanner {
 			Assertions.assertEquals("<ID,r:2,temp>", scanGenerale.nextToken().toString());
 			Assertions.assertEquals("<ASSIGN,r:2>", scanGenerale.nextToken().toString());
 		});
-		Assertions.assertThrows(LexicalException.class, () -> scanGenerale.nextToken(), "Rilevato numero float con parte decimale nulla");	
+		exc = Assertions.assertThrows(LexicalException.class, () -> scanGenerale.nextToken());
+		Assertions.assertEquals("Rilevato numero float con parte decimale nulla alla riga 2", exc.getMessage());
 		Assertions.assertDoesNotThrow(() -> {
 			Assertions.assertEquals("<SEMI,r:2>", scanGenerale.nextToken().toString());
 			Assertions.assertEquals("<TYFLOAT,r:4>", scanGenerale.nextToken().toString());

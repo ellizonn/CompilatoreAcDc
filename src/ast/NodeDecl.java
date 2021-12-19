@@ -22,7 +22,7 @@ public class NodeDecl extends NodeDecSt {
 	public String toString() {
 		/*String outString = "Decl: <Id="+id+",Type="+type;
 		return outString;*/
-		return "Decl: <id="+this.id+",type="+this.type+">";
+		return "Decl: <"+this.id+", "+this.type+">";
 	}
 
 }

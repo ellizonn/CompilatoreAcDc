@@ -165,7 +165,7 @@ public class Scanner {
 				throw new LexicalException("Eccezione di tipo IOException", e);
 			}
 			if (!numbers.contains(nextChar)) {
-				throw new LexicalException("Rilevato numero float con parte decimale nulla");
+				throw new LexicalException("Rilevato numero float con parte decimale nulla alla riga "+this.riga);
 			}
 			int decimals = 1;
 			while(numbers.contains(nextChar)) {
@@ -179,7 +179,7 @@ public class Scanner {
 				decimals+=1;
 			}
 			if (decimals >= 5) {
-				throw new LexicalException("Rilevato numero float con parte decimale troppo lunga");
+				throw new LexicalException("Rilevato numero float con parte decimale troppo lunga alla riga "+this.riga);
 			}
 			return new Token(TokenType.FLOAT, this.riga, number);
 		}

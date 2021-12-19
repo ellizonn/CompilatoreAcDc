@@ -9,30 +9,29 @@ import scanner.*;
 
 class TestAST {
 
-	/*
 	@Test
-	void test() {
-		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testAST/testDec.txt"));
+	void test1() {
+		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testAST/test1.txt"));
 		Parser parser = new Parser(scanner);
 		NodeProgram nodeProgram = Assertions.assertDoesNotThrow(() -> parser.parse());
+		Assertions.assertEquals("Prg: [Decl: <Id: a, FLOAT>]", nodeProgram.toString());
 	}
-	*/
 	
 	@Test
-	void testDec() {
-		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testParser/testDec.txt"));
+	void test2() {
+		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testAST/test2.txt"));
 		Parser parser = new Parser(scanner);
 		NodeProgram nodeProgram = Assertions.assertDoesNotThrow(() -> parser.parse());
-		//Assertions.assertEquals("Decl: <id="+this.id+",type="+this.type+">", actual);
-		System.out.println(nodeProgram.toString());
+		Assertions.assertEquals("Prg: [Decl: <Id: a, INT>, Decl: <Id: b, FLOAT>, Print: <Id: a>]", nodeProgram.toString());
 	}
 	
-	/*
 	@Test
-	void testDSsDclStm() {
-		Parser parser = new Parser(scanDSsDclStm);
-		Assertions.assertThrows(SyntaxException.class, () -> parser.parse(), "Errore sintattico alla riga 5: aspettavo ID, invece ho ricevuto TYFLOAT");	
+	void test3() {
+		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testAST/test3.txt"));
+		Parser parser = new Parser(scanner);
+		NodeProgram nodeProgram = Assertions.assertDoesNotThrow(() -> parser.parse());
+		Assertions.assertEquals("Prg: [Print: <Id: stampa>, Decl: <Id: numberfloat, FLOAT>, Decl: <Id: ciao, INT>]", nodeProgram.toString());
 	}
-	*/
 
+	
 }

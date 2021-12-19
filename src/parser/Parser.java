@@ -63,12 +63,12 @@ public class Parser {
 		case TYINT,TYFLOAT:
 			NodeDecl nodeDecl = parseDcl();
 			ArrayList<NodeDecSt> list1 = parseDSs();
-			list1.add(nodeDecl);
+			list1.add(0, nodeDecl);
 			return list1;
 		case ID,PRINT:
 			NodeStm nodeStm = parseStm();
 			ArrayList<NodeDecSt> list2 = parseDSs();
-			list2.add(nodeStm);
+			list2.add(0, nodeStm);
 			return list2;
 		case EOF:
 			return new ArrayList<NodeDecSt>();
@@ -120,7 +120,8 @@ public class Parser {
 			match(TokenType.SEMI);
 			return new NodePrint(new NodeId(id.getVal()));
 		default:
-			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
+			return null;
+			//throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	

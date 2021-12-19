@@ -1,0 +1,3 @@
+print stampa;
+float numberfloat;
+int ciao;
