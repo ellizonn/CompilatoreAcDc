@@ -1,10 +1,10 @@
 package ast;
 
-public class NodePrint extends NodeStm {
+public class NodeDeref extends NodeExpr {
 	
 	private NodeId id = null;
 	
-	public NodePrint(NodeId id) {
+	public NodeDeref(NodeId id) {
 		this.id = id;
 	}
 	
@@ -14,7 +14,7 @@ public class NodePrint extends NodeStm {
 	
 	@Override
 	public String toString() {
-		return "Print: <"+getId()+">";
+		return "Deref: <"+getId()+">";
 	}
 
 }

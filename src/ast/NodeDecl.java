@@ -2,8 +2,8 @@ package ast;
 
 public class NodeDecl extends NodeDecSt {
 	
-	NodeId id = null;
-	LangType type = null;
+	private NodeId id = null;
+	private LangType type = null;
 	
 	public NodeDecl(NodeId id, LangType type) {
 		this.id = id;
@@ -22,7 +22,7 @@ public class NodeDecl extends NodeDecSt {
 	public String toString() {
 		/*String outString = "Decl: <Id="+id+",Type="+type;
 		return outString;*/
-		return "Decl: <"+this.id+", "+this.type+">";
+		return "Decl: <"+getId()+", "+getType()+">";
 	}
 
 }

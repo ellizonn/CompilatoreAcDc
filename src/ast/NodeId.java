@@ -2,7 +2,7 @@ package ast;
 
 public class NodeId extends NodeAST {
 	
-	String name;
+	private String name = null;
 	
 	public NodeId(String name) {
 		this.name = name;
@@ -14,7 +14,7 @@ public class NodeId extends NodeAST {
 	
 	@Override
 	public String toString() {
-		return "Id: "+this.name;
+		return "Id: "+getName();
 	}
 
 }

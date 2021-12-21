@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class NodeProgram extends NodeAST {
 	
-	ArrayList<NodeDecSt> decSts;
+	private ArrayList<NodeDecSt> decSts = null;
 	
 	public NodeProgram(ArrayList<NodeDecSt> decSts) {
 		this.decSts = decSts;
@@ -16,7 +16,7 @@ public class NodeProgram extends NodeAST {
 	
 	@Override
 	public String toString() {
-		return "Prg: "+decSts.toString();
+		return "Prg: "+getDecSts();
 	}
 
 }
