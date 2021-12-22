@@ -20,7 +20,7 @@ public class NodeCost extends NodeExpr {
 	
 	@Override
 	public String toString() {
-		return "Cost: <"+this.value+", "+this.type+">";
+		return "<Cost:"+this.value+","+this.type+">";
 	}
 	
 	

@@ -14,7 +14,7 @@ public class NodeId extends NodeAST {
 	
 	@Override
 	public String toString() {
-		return "Id: "+getName();
+		return "(Id:"+getName()+")";
 	}
 
 }

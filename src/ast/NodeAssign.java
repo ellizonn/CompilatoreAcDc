@@ -20,7 +20,7 @@ public class NodeAssign extends NodeStm {
 	
 	@Override
 	public String toString() {
-		return "Assign: <"+getId()+", "+getExpr()+">";
+		return "<Assign:"+getId()+","+getExpr()+">";
 	}
 
 }

@@ -26,7 +26,7 @@ public class NodeBinOp extends NodeExpr {
 	
 	@Override
 	public String toString() {
-		return "BinOp: <"+getOp()+", "+getLeft()+", "+getRight()+">";
+		return "(BinOp:"+getOp()+","+getLeft()+","+getRight()+")";
 	}
 
 }
