@@ -109,19 +109,19 @@ public class Parser {
 		}
 		switch (tk.getType()) {
 		case ID:
-			match(TokenType.ID);
+			Token id1 = match(TokenType.ID);
 			match(TokenType.ASSIGN);
-			parseExp();
+			NodeExpr exp = parseExp();
 			match(TokenType.SEMI);
-			return null; //TODO da fare
+			return new NodeAssign(new NodeId(id1.getVal()), exp);
 		case PRINT:
 			match(TokenType.PRINT);
-			Token id = match(TokenType.ID);
+			Token id2 = match(TokenType.ID);
 			match(TokenType.SEMI);
-			return new NodePrint(new NodeId(id.getVal()));
+			return new NodePrint(new NodeId(id2.getVal()));
 		default:
-			return null;
-			//throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
+			//return null;
+			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
@@ -134,15 +134,15 @@ public class Parser {
 		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
-			parseTr();
-			parseExpP();
-			return null;
+			NodeExpr tr = parseTr();
+			NodeExpr exp = parseExpP(tr);
+			return exp;
 		default:
 			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private NodeExpr parseExpP() throws SyntaxException {
+	private NodeExpr parseExpP(NodeExpr leftOp) throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
@@ -152,16 +152,16 @@ public class Parser {
 		switch (tk.getType()) {
 		case PLUS:
 			match(TokenType.PLUS);
-			parseTr();
-			parseExpP();
-			return null;
+			NodeExpr trP = parseTr();
+			NodeExpr expP = parseExpP(new NodeBinOp(LangOper.PLUS, leftOp, trP));
+			return expP;
 		case MINUS:
 			match(TokenType.MINUS);
-			parseTr();
-			parseExpP();
-			return null;
+			NodeExpr trM = parseTr();
+			NodeExpr expM = parseExpP(new NodeBinOp(LangOper.MINUS, leftOp, trM));
+			return expM;
 		case SEMI:
-			return null;
+			return leftOp;
 		default:
 			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
@@ -176,15 +176,15 @@ public class Parser {
 		}
 		switch (tk.getType()) {
 		case INT,FLOAT,ID:
-			parseVal();
-			parseTrP();
-			return null;
+			NodeExpr val = parseVal();
+			NodeExpr trp = parseTrP(val);
+			return trp;
 		default:
 			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
 	}
 	
-	private NodeExpr parseTrP() throws SyntaxException {
+	private NodeExpr parseTrP(NodeExpr leftOp) throws SyntaxException {
 		Token tk = null;
 		try {
 			tk = scanner.peekToken();
@@ -194,16 +194,16 @@ public class Parser {
 		switch (tk.getType()) {
 		case TIMES:
 			match(TokenType.TIMES);
-			parseVal();
-			parseTrP();
-			return null;
+			NodeExpr val1 = parseVal();
+			NodeExpr trp1 = parseTrP(new NodeBinOp(LangOper.TIMES, leftOp, val1));
+			return trp1;
 		case DIV:
 			match(TokenType.DIV);
-			parseVal();
-			parseTrP();
-			return null;
+			NodeExpr val2 = parseVal();
+			NodeExpr trp2 = parseTrP(new NodeBinOp(LangOper.DIV, leftOp, val2));
+			return trp2;
 		case PLUS,MINUS,SEMI:
-			return null;
+			return leftOp;
 		default:
 			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}
@@ -219,13 +219,16 @@ public class Parser {
 		switch (tk.getType()) {
 		case INT:
 			match(TokenType.INT);
-			return null;
+			return new NodeCost(tk.getVal(), LangType.INT);
+			/* return null; */ //cost
 		case FLOAT:
 			match(TokenType.FLOAT);
-			return null;
+			return new NodeCost(tk.getVal(), LangType.FLOAT);
+			/* return null; */ //cost
 		case ID:
 			match(TokenType.ID);
-			return null;
+			return new NodeDeref(new NodeId(tk.getVal()));
+			/* return null; */  //deref
 		default:
 			throw new SyntaxException("Errore sintattico alla riga "+tk.getLine());
 		}

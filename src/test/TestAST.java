@@ -32,6 +32,16 @@ class TestAST {
 		NodeProgram nodeProgram = Assertions.assertDoesNotThrow(() -> parser.parse());
 		Assertions.assertEquals("Prg: [Print: <Id: stampa>, Decl: <Id: numberfloat, FLOAT>, Decl: <Id: ciao, INT>]", nodeProgram.toString());
 	}
+	
+	/*
+	@Test
+	void test4() {
+		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testParser/fileParserCorrect2.txt"));
+		Parser parser = new Parser(scanner);
+		NodeProgram nodeProgram = Assertions.assertDoesNotThrow(() -> parser.parse());
+		System.out.println(nodeProgram);
+	}
+	*/
 
 	
 }
