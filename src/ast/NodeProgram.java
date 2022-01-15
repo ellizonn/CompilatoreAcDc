@@ -1,8 +1,11 @@
 package ast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class NodeProgram extends NodeAST {
+import visitor.IVisitor;
+
+public class NodeProgram extends NodeAST implements Iterable<NodeDecSt> {
 	
 	private ArrayList<NodeDecSt> decSts = null;
 	
@@ -15,8 +18,18 @@ public class NodeProgram extends NodeAST {
 	}
 	
 	@Override
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
+	}
+	
+	@Override
 	public String toString() {
 		return "Prg: "+getDecSts();
+	}
+
+	@Override
+	public Iterator<NodeDecSt> iterator() {
+		return this.decSts.iterator();
 	}
 
 }
