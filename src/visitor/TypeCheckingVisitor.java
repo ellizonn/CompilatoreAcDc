@@ -2,7 +2,6 @@ package visitor;
 
 import ast.*;
 import symbolTable.*;
-import token.TokenType;
 
 public class TypeCheckingVisitor implements IVisitor {
 	
@@ -64,15 +63,19 @@ public class TypeCheckingVisitor implements IVisitor {
 	
 	@Override
 	public void visit(NodePrint node) {
-		NodeId id = node.getId();
-		String name = id.getName();
-		id.accept(this);
-		if (SymbolTable.lookup(name) == null) {
+		node.getId().accept(this);
+		if (node.getId().getResType() == null) {
 			node.setResType(TypeDescriptor.ERROR);
 		}
 		else {
 			node.setResType(TypeDescriptor.VOID);
 		}
+		/*if (SymbolTable.lookup(name) == null) {
+			node.setResType(TypeDescriptor.ERROR);
+		}
+		else {
+			node.setResType(TypeDescriptor.VOID);
+		}*/
 	}
 	
 	@Override
@@ -135,7 +138,7 @@ public class TypeCheckingVisitor implements IVisitor {
 
 	@Override
 	public void visit(NodeConvert node) {
-		node.getExpr().accept(this);
+		//node.getExpr().accept(this);
 		if (node.getExpr().getResType().equals(TypeDescriptor.ERROR)) {
 			node.setResType(TypeDescriptor.ERROR);
 		}

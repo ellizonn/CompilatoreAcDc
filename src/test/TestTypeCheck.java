@@ -13,7 +13,7 @@ import visitor.TypeCheckingVisitor;
 class TestTypeCheck {
 
 	@Test
-	void testDeclRepeat() {
+	void testDeclRepeated() {
 		SymbolTable.init();
 		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testTypeCheck/1_dicRipetute.txt"));
 		Parser parser = new Parser(scanner);
@@ -82,7 +82,7 @@ class TestTypeCheck {
 	}
 	
 	@Test
-	void testGenerale() {
+	void testGeneral() {
 		SymbolTable.init();
 		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testTypeCheck/testGenerale.txt"));
 		Parser parser = new Parser(scanner);
@@ -95,7 +95,7 @@ class TestTypeCheck {
 	}
 	
 	@Test
-	void testGenerale2() {
+	void testGeneral2() {
 		SymbolTable.init();
 		Scanner scanner = Assertions.assertDoesNotThrow(() -> new Scanner("src/test/data/testTypeCheck/testGenerale2.txt"));
 		Parser parser = new Parser(scanner);
