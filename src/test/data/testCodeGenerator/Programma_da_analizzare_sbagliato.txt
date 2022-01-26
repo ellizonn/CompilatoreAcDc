@@ -1,0 +1,9 @@
+int a;
+float b;
+
+c = a;
+
+b = 2 + 7.5;
+
+print a;
+print b;

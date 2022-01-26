@@ -6,6 +6,8 @@ public class Attributes {
 	
 	private LangType type;
 	
+	private char registro;
+	
 	public Attributes(LangType type) {
 		this.type = type;
 	}
@@ -18,5 +20,12 @@ public class Attributes {
 		type=t;
 	}
 
+	public char getRegistro() {
+		return this.registro;
+	}
+
+	public void setRegistro(char registro) {
+		this.registro = registro;
+	}
 
 }

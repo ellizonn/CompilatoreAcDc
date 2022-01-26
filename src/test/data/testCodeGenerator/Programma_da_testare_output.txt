@@ -1,0 +1,6 @@
+int i;
+float f;
+i = 2 * 5;
+print i;
+f = i + 2.0;
+print f;
