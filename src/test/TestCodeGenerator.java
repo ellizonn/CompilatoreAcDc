@@ -13,8 +13,7 @@ import ast.NodeProgram;
 import parser.Parser;
 import scanner.Scanner;
 import symbolTable.SymbolTable;
-import visitor.CodeGeneratorVisitor;
-import visitor.TypeCheckingVisitor;
+import visitor.*;
 
 class TestCodeGenerator {
 
@@ -23,95 +22,26 @@ class TestCodeGenerator {
     }
 	
 	@Test
-	public void testGenerazioneCodice() { 
+	public void testCodeGenerator() { 
 		SymbolTable.init();
-		String path = "src/test/data/testCodeGenerator/Programma_da_analizzare.txt";
+		String path = "src/test/data/testCodeGenerator/Programma.txt";
 		String pathCorretto = "src/test/data/testCodeGenerator/Programma_corretto.txt";
-		NodeProgram prg = runParser(path);
-		TypeCheckingVisitor tcv = new TypeCheckingVisitor();
-		CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-		tcv.visit(prg);
-		/*
-		if(!tcv.getLog().isEmpty())
-			fail("Errori durante l'esecuzione dell'analisi semantica.");
-		*/
-		assertTrue(tcv.getLog().toString().isEmpty());
-		cgv.visit(prg);
-		File output = new File (pathCorretto);
-		FileWriter fw = Assertions.assertDoesNotThrow(() -> new FileWriter(output, false));
-		/*
-		BufferedWriter bw = new BufferedWriter(fw);
-		bw.write(cgv.getCodice());
-		bw.flush();
-		bw.close();
-		*/
-		Assertions.assertDoesNotThrow(() -> {
-			fw.write(cgv.getCodice().toString());
-			fw.flush();
-			fw.close();
-		});
-		assertEquals(" lA sB 0 k 2 7.5 5 k + sB 0 k lA p P lB p P", cgv.getCodice().toString());
-	}
-	
-	@Test
-	public void testGenerazioneCodiceProf() { 
-		SymbolTable.init();
-		String path = "src/test/data/testCodeGenerator/Programma_prof.txt";
-		String pathCorretto = "src/test/data/testCodeGenerator/Programma_corretto_prof.txt";
-		NodeProgram prg = runParser(path);
-		TypeCheckingVisitor tcv = new TypeCheckingVisitor();
-		CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-		tcv.visit(prg);
+		NodeProgram nodeProgram = runParser(path);
+		TypeCheckingVisitor typeChecking = new TypeCheckingVisitor();
+		CodeGeneratorVisitor codeGenerator = new CodeGeneratorVisitor();
+		typeChecking.visit(nodeProgram);
 
-		assertTrue(tcv.getLog().toString().isEmpty());
-		cgv.visit(prg);
+		assertTrue(typeChecking.getLog().toString().isEmpty());
+		codeGenerator.visit(nodeProgram);
 		File output = new File (pathCorretto);
 		FileWriter fw = Assertions.assertDoesNotThrow(() -> new FileWriter(output, false));
 		
 		Assertions.assertDoesNotThrow(() -> {
-			fw.write(cgv.getCodice().toString());
+			fw.write(codeGenerator.getCodice().toString());
 			fw.flush();
 			fw.close();	
 		});
-		assertEquals(" 1.0 6 5 k / sB 0 k lB p P 1 6 / sA 0 k lA p P", cgv.getCodice().toString());
-	}
-	
-	@Test
-	public void testGenerazioneCodiceSbagliato() { 
-		SymbolTable.init();
-		String path = "src/test/data/testCodeGenerator/Programma_da_analizzare_sbagliato.txt";
-		// String pathCorretto = "src/test/codeGeneratorVisitor/Programma_sbagliato.txt";
-		NodeProgram prg = runParser(path);
-		TypeCheckingVisitor tcv = new TypeCheckingVisitor();
-		// CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-		tcv.visit(prg);
-
-		assertFalse(tcv.getLog().toString().isEmpty());
-		assertEquals("Variabile 'c' non definita\n", tcv.getLog().toString());
-	}
-	
-	@Test
-	public void testProgrammaDaTestare() { 
-		SymbolTable.init();
-		String path = "src/test/data/testCodeGenerator/Programma_da_testare_output.txt";
-		String pathCorretto = "src/test/data/testCodeGenerator/Programma_testato_corretto.txt";
-		NodeProgram prg = runParser(path);
-		TypeCheckingVisitor tcv = new TypeCheckingVisitor();
-		CodeGeneratorVisitor cgv = new CodeGeneratorVisitor();
-		tcv.visit(prg);
-
-		assertTrue(tcv.getLog().toString().isEmpty());				
-		
-		cgv.visit(prg);
-		File output = new File (pathCorretto);
-		FileWriter fw = Assertions.assertDoesNotThrow(() -> new FileWriter(output, false));		
-		
-		Assertions.assertDoesNotThrow(() -> {
-			fw.write(cgv.getCodice().toString());
-			fw.flush();
-			fw.close();
-		});	
-		assertEquals(" 2 5 * sA 0 k lA p P lA 2.0 5 k + sB 0 k lB p P", cgv.getCodice().toString());
+		assertEquals("1.0 6 5 k / sB 0 k lB p P 1 6 / sA 0 k lA p P ", codeGenerator.getCodice().toString());
 	}
 
 }

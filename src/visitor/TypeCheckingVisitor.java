@@ -21,9 +21,18 @@ public class TypeCheckingVisitor implements IVisitor {
 	
 	@Override
 	public void visit(NodeProgram node) {
-		node.setResType(TypeDescriptor.VOID);
+		boolean flag = false;
 		for (NodeDecSt decSt : node) {
 			decSt.accept(this);
+			if (decSt.getResType() != TypeDescriptor.VOID) {
+				flag = true;
+			}
+		}
+		if (flag == false) {
+			node.setResType(TypeDescriptor.VOID);
+		}
+		else {
+			node.setResType(TypeDescriptor.ERROR);
 		}
 	}
 
@@ -64,18 +73,12 @@ public class TypeCheckingVisitor implements IVisitor {
 	@Override
 	public void visit(NodePrint node) {
 		node.getId().accept(this);
-		if (node.getId().getResType() == null) {
+		if (node.getId().getResType().equals(TypeDescriptor.ERROR)) {
 			node.setResType(TypeDescriptor.ERROR);
 		}
 		else {
 			node.setResType(TypeDescriptor.VOID);
 		}
-		/*if (SymbolTable.lookup(name) == null) {
-			node.setResType(TypeDescriptor.ERROR);
-		}
-		else {
-			node.setResType(TypeDescriptor.VOID);
-		}*/
 	}
 	
 	@Override
@@ -138,9 +141,11 @@ public class TypeCheckingVisitor implements IVisitor {
 
 	@Override
 	public void visit(NodeConvert node) {
-		//node.getExpr().accept(this);
-		if (node.getExpr().getResType().equals(TypeDescriptor.ERROR)) {
-			node.setResType(TypeDescriptor.ERROR);
+		if (!node.getResType().equals(TypeDescriptor.FLOAT)) {
+			node.getExpr().accept(this);
+			if (node.getExpr().getResType().equals(TypeDescriptor.ERROR)) {
+				node.setResType(TypeDescriptor.ERROR);
+			}
 		}
 	}
 	
